@@ -1,0 +1,24 @@
+
+
+endpoints:
+  prometheus:
+    id: myprometheus
+    
+management:
+  security:
+    enabled: false
+    
+    
+spring:
+    application:
+        #指定服务名称，注册到eureka就使用这个名称
+        name: ms-consumer-movie
+eureka:
+  client:
+    serviceUrl:
+      #defaultZone: http://user:password123@localhost:8761/eureka
+      defaultZone: http://192.168.20.34:30115/eureka/
+      
+  instance:
+    #指定注册到eureka时，注册自己的ip上去，(默认是hostname)
+    prefer-ip-address: true

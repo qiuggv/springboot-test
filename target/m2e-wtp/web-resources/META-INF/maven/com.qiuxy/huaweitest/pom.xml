@@ -1,0 +1,93 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.qiuxy</groupId>
+	<artifactId>huaweitest</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
+
+	<name>miaosha1</name>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+		<spring-cloud.version>Camden.SR3</spring-cloud.version>
+	</properties>
+
+	<!-- 
+	The spring-boot-starter-parent is a special starter that provides useful Maven defaults. 
+	It also provides a dependency-management section so that you can omit version tags 
+	for “blessed” dependencies 
+		1.parent里面提供了有用的maven默认值，比如说jdk编译版本
+		2.parent里面用dependency-management定义了version，所以后面加的dependency就不需要加版本号了
+		3.父pom.xml里面定义了一些工具插件,例如：spring-boot插件.通过执行这个插件启动mvn spring-boot:run
+		
+	-->
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.5.8.RELEASE</version>
+	</parent>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		 
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-registry-prometheus</artifactId>
+      <version>1.0.11</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-spring-legacy</artifactId>
+        <version>1.0.11</version>
+	</dependency>
+	
+	<dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+    
+    		<!-- 加入eureka client所有必须的依赖 , 这个eureka包的版本，由下面spring-cloud-dependencies里面定义好了-->
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-eureka</artifactId>
+		</dependency>
+
+	</dependencies>
+	
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<!-- 这个pom定义了spring cloud的所有依赖的版本 -->
+				<!-- 就是说，我们指定springcloud的大版本，这个版本里面所有组件的版本都打包好了，我们不用关系里面组件的版本，例如eureka的版本 -->
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<plugins>
+			<!-- 只用用了这个插件，spring-boot打war包的时候，war包才可以直接用java -jar **.war来执行 -->
+			<!-- 否则打出来的war包，不能之间用java -jar来执行 -->
+			<!-- 原理是：这个插件会在repackage阶段重新打包，加入嵌入式执行需要的包 -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+
+</project>
